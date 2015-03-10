@@ -36,8 +36,8 @@ Example:
 
 Notes:
 
-		Typing "exit" or "quit" at the prompt will exit the program.
+Typing "exit" or "quit" at the prompt will exit the program.
 
-		Typing "menu" will display the menu.
+Typing "menu" will display the menu.
 */
 package menu
