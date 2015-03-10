@@ -27,7 +27,10 @@ type Menu struct {
 	Options  MenuOptions
 }
 
-// MenuOptions wrapper with default values
+// Setup the options for the menu.
+//
+// An empty string for prompt and a length of 0 will use the
+// default "> " prompt and 100 character wide menu
 func NewMenuOptions(prompt string, length int) MenuOptions {
 	if prompt == "" {
 		prompt = "> "
