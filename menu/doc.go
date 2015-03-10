@@ -30,3 +30,4 @@ Example:
             menu.Start()
         }
 */
+package menu
