@@ -3,6 +3,7 @@ package menu
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"text/tabwriter"
@@ -44,10 +45,7 @@ func NewMenuOptions(prompt string, length int) MenuOptions {
 }
 
 // Trim whitespace, newlines, and create command+arguments slice
-func cleanCommand(cmd string, err error) ([]string, error) {
-	if err != nil {
-		return nil, err
-	}
+func cleanCommand(cmd string) ([]string, error) {
 	cmd_args := strings.Split(strings.Trim(cmd, " \n"), " ")
 	return cmd_args, nil
 }
@@ -66,19 +64,34 @@ func (m *Menu) menu() {
 	w := new(tabwriter.Writer)
 	w.Init(os.Stdout, 5, 0, 1, ' ', 0)
 	layoutMenu(w, m.Commands, m.Options.MenuLength)
+}
 
+// Wrapper for providing Stdin to the main menu loop
+func (m *Menu) Start() {
+	m.start(os.Stdin)
 }
 
 // Main loop
-func (m *Menu) Start() {
+func (m *Menu) start(reader io.Reader) {
 	m.menu()
 MainLoop:
 	for {
-		input := bufio.NewReader(os.Stdin)
+		input := bufio.NewReader(reader)
 		// Prompt for input
 		m.prompt()
-		cmd, _ := cleanCommand(input.ReadString('\n'))
 
+		inputString, err := input.ReadString('\n')
+		if err != nil {
+			// If we didn't receive anything from ReadString
+			// we shouldn't continue because we're not blocking
+			// anymore but we also don't have any data
+			break MainLoop
+		}
+
+		cmd, _ := cleanCommand(inputString)
+		if len(cmd) < 1 {
+			break MainLoop
+		}
 		// Route the first index of the cmd slice to the appropriate case
 	Route:
 		switch cmd[0] {
