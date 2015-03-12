@@ -15,11 +15,13 @@ Example:
 		func cmd1(args ...string) error {
 			// Do something
 			fmt.Println("Output of cmd1")
+			return nil
 		}
 
 		func cmd2(args ...string) error {
 			//Do something
 			fmt.Println("Output of cmd2")
+			return nil
 		}
 
 		func main() {
