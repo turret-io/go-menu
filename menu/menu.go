@@ -33,7 +33,7 @@ type Menu struct {
 //
 // An empty string for prompt and a length of 0 will use the
 // default "> " prompt and 100 character wide menu
-func NewMenuOptions(prompt string, length int, command_string string) MenuOptions {
+func NewMenuOptions(prompt string, length int, menuCommand string) MenuOptions {
 	if prompt == "" {
 		prompt = "> "
 	}
@@ -42,7 +42,7 @@ func NewMenuOptions(prompt string, length int, command_string string) MenuOption
 		length = 100
 	}
 
-	return MenuOptions{prompt, length, command_string}
+	return MenuOptions{prompt, length, menuCommand}
 }
 
 // Trim whitespace, newlines, and create command+arguments slice
