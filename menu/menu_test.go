@@ -19,7 +19,35 @@ func getOpts() []CommandOption {
 }
 
 func getMenuOpts() MenuOptions {
-	return NewMenuOptions("", 0)
+	return NewMenuOptions("", 0, "")
+}
+
+// Test menu creation with default options
+func TestMenuOptions(t *testing.T) {
+	cmdOpts := getOpts()
+	menuOpts := MenuOptions{}
+
+	menu := NewMenu(cmdOpts, menuOpts)
+
+	if menu.Commands[0].Command != cmd {
+		t.Error("Command is not set")
+	}
+
+	if menu.Commands[0].Description != desc {
+		t.Error("Description is not set")
+	}
+
+	if menu.Options.Prompt != "> " {
+		t.Error("Unexpected prompt")
+	}
+
+	if menu.Options.MenuLength != 100 {
+		t.Error("Unexpected menu length")
+	}
+
+	if menu.Options.MenuCommand != "menu" {
+		t.Error("Unexpected MenuCommand")
+	}
 }
 
 // Test that the menu struct is created

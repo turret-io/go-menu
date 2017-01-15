@@ -16,10 +16,11 @@ type CommandOption struct {
 	Function             func(args ...string) error
 }
 
-// Menu options -- right now only sets prompt
+// MenuOptions sets prompt, character width of menu, and command
+// used to display the menu
 type MenuOptions struct {
-	Prompt     string
-	MenuLength int
+	Prompt      string
+	MenuLength  int
 	MenuCommand string
 }
 
@@ -32,16 +33,9 @@ type Menu struct {
 // Setup the options for the menu.
 //
 // An empty string for prompt and a length of 0 will use the
-// default "> " prompt and 100 character wide menu
+// default "> " prompt and 100 character wide menu. An empty
+// string for menuCommand will use the default 'menu' command.
 func NewMenuOptions(prompt string, length int, menuCommand string) MenuOptions {
-	if prompt == "" {
-		prompt = "> "
-	}
-
-	if length == 0 {
-		length = 100
-	}
-
 	return MenuOptions{prompt, length, menuCommand}
 }
 
@@ -53,6 +47,18 @@ func cleanCommand(cmd string) ([]string, error) {
 
 // Creates a new menu with options
 func NewMenu(cmds []CommandOption, options MenuOptions) *Menu {
+	if options.Prompt == "" {
+		options.Prompt = "> "
+	}
+
+	if options.MenuLength == 0 {
+		options.MenuLength = 100
+	}
+
+	if options.MenuCommand == "" {
+		options.MenuCommand = "menu"
+	}
+
 	return &Menu{cmds, options}
 }
 
