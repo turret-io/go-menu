@@ -20,6 +20,7 @@ type CommandOption struct {
 type MenuOptions struct {
 	Prompt     string
 	MenuLength int
+	MenuCommand string
 }
 
 // Menu struct encapsulates Commands and Options
@@ -32,7 +33,7 @@ type Menu struct {
 //
 // An empty string for prompt and a length of 0 will use the
 // default "> " prompt and 100 character wide menu
-func NewMenuOptions(prompt string, length int) MenuOptions {
+func NewMenuOptions(prompt string, length int, menuCommand string) MenuOptions {
 	if prompt == "" {
 		prompt = "> "
 	}
@@ -41,7 +42,7 @@ func NewMenuOptions(prompt string, length int) MenuOptions {
 		length = 100
 	}
 
-	return MenuOptions{prompt, length}
+	return MenuOptions{prompt, length, menuCommand}
 }
 
 // Trim whitespace, newlines, and create command+arguments slice
@@ -99,7 +100,7 @@ MainLoop:
 			fmt.Println("Exiting...")
 			break MainLoop
 
-		case "menu":
+		case m.Options.MenuCommand:
 			m.menu()
 			break
 
